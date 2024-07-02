@@ -1,3 +1,4 @@
+library(openxlsx)
 library(tidyverse)
 library(brms)
 library(emmeans)
@@ -130,7 +131,7 @@ fig1a <- plot(c_eff, plot = FALSE, points = FALSE)[[3]] +
                                 "soil (+), plant (–)", 
                                 "soil (+), plant (+)")) +
   labs(
-    y = "Community level energy flux log(J/h)",
+    y = "Total energy flux log(J/h)",
     x = "Plant richness") +
   scale_color_manual(values = c('#cb992e','#cb992e', '#412914', '#412914'), 
                      name = "history treatment",
@@ -139,9 +140,9 @@ fig1a <- plot(c_eff, plot = FALSE, points = FALSE)[[3]] +
                                 "soil (+), plant (–)", 
                                 "soil (+), plant (+)")) +
   theme_classic() +
-  theme(axis.title.x = element_text(size = rel(1.0)),
+  theme(axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 fig1a
 
 fig1b = fluxdata %>%
@@ -171,12 +172,12 @@ fig1b = fluxdata %>%
   annotate('text', x=c(.85,1.85,2.85,3.85), y=5.5, label=c('a','a','b','b'),
            color = "darkred", fontface = 'bold') +
   labs(
-    y = "Community level energy flux log(J/h)",
+    y = "Total energy flux log(J/h)",
     x = "History treatment") +
   theme_classic() +
-  theme(axis.title.x = element_text(size = rel(1.0)),
+  theme(axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 
 
@@ -259,9 +260,9 @@ fig1c = fluxdata %>%
     x = "History treatment") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.x = element_text(size = rel(1.0)),
+        axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 
 ################################## Herb flux ###################################
@@ -344,9 +345,9 @@ fig1e = fluxdata %>%
     x = "History treatment") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.x = element_text(size = rel(1.0)),
+        axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 
 ################################## Micr flux ###################################
@@ -430,9 +431,9 @@ fig1d = fluxdata %>%
     x = "History treatment") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.x = element_text(size = rel(1.0)),
+        axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 
 
@@ -516,25 +517,15 @@ fig1f = fluxdata %>%
     x = "History treatment") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.x = element_text(size = rel(1.0)),
+        axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 
 library(patchwork)
 
-(fig1a + fig1c + fig1e)/(fig1b + fig1d + fig1f) + 
-  plot_annotation(tag_levels = list(c('a','c','e',
-                                      'b','d','f'))) +
-  plot_layout(widths = c(2  , 1, 1,
-                         1.5, 1, 1))
-
 (fig1a / fig1b) + 
   plot_annotation(tag_levels = list(c('a','b')))
-(fig1c + fig1e)/(fig1d + fig1f) + 
-  plot_annotation(tag_levels = list(c('c','e',
-                                      'd','f')))
-
 ggsave("Figure1ab.png",
        bg = "white",
        scale = 1.6,
@@ -542,6 +533,10 @@ ggsave("Figure1ab.png",
        height = 90,
        units = "mm",
        dpi = 600)
+
+(fig1c + fig1e)/(fig1d + fig1f) + 
+  plot_annotation(tag_levels = list(c('c','e',
+                                      'd','f')))
 ggsave("Figure1cdef.png",
        bg = "white",
        scale = 1.6,
@@ -628,9 +623,9 @@ fig2c = commm %>%
     x = "History treatment") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.x = element_text(size = rel(1.0)),
+        axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 ################################# CWM Bodymass #################################
 
@@ -710,9 +705,9 @@ fig2b = commm %>%
     x = "History treatment") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.x = element_text(size = rel(1.0)),
+        axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 
 ################################# Shannon Entropy ##############################
@@ -786,14 +781,16 @@ fig2a = commm %>%
   scale_shape_manual(values=c(21, 22, 21, 22))+
   scale_fill_manual(values=c('#cb992e','#cb992e', '#412914', '#412914')) +
   scale_x_discrete(labels = c('--', '-+', '+-', '++')) +
+  annotate('text', x=c(.85,1.85,2.85,3.85), y=15, label=c('a','a','a','a'),
+           color = "darkred", fontface = 'bold') +
   labs(
     y = "Diversity",
     x = "History treatment") +
   theme_classic() +
   theme(legend.position = "none",
-        axis.title.x = element_text(size = rel(1.0)),
+        axis.title.x = element_text(size = rel(1.2)),
         axis.text.x = element_text(size = rel(1.2)),
-        axis.title.y = element_text(size = rel(1.0)))
+        axis.title.y = element_text(size = rel(1.2)))
 
 
 (fig2a + fig2b + fig2c) + 
@@ -914,46 +911,7 @@ ggsave("Figure3ab.png",
        dpi = 600)
 
 
-detr.m.2 %>%
-  
-  emmeans(~ treatment) %>%
-  gather_emmeans_draws() %>%
-  median_qi()
-
-soil = factor(c("0", "0", "1", "1"), levels = c("0", "1"))
-detr.m.2 %>%
-  ref_grid() %>% 
-  add_grouping("soil",
-               "treatment",
-               factor(c("0", "0", "1", "1"), 
-                      levels = c("0", "1"))) %>% 
-  emmeans(~ soil) %>%
-  contrast(method = "pairwise") %>%
-  gather_emmeans_draws() %>%
-  mean_qi()
-
-
-pred.m.2 %>%
-  ref_grid() %>% 
-  add_grouping("soil",
-               "treatment",
-               factor(c("0", "0", "1", "1"), 
-                      levels = c("0", "1"))) %>% 
-  emmeans(~ soil) %>%
-  contrast(method = "pairwise") %>%
-  gather_emmeans_draws() %>%
-  mean_qi()
-
-total.m.2 %>%
-  ref_grid() %>% 
-  add_grouping("soil",
-               "treatment",
-               factor(c("0", "0", "1", "1"), 
-                      levels = c("0", "1"))) %>% 
-  emmeans(~ soil) %>%
-  contrast(method = "pairwise") %>%
-  gather_emmeans_draws() %>%
-  mean_qi()
+# examples of calculating group contrasts
 
 total.m.2 %>%
   ref_grid() %>% 
@@ -964,4 +922,15 @@ total.m.2 %>%
   emmeans(~ soil) %>%
   contrast(method = "pairwise") %>%
   gather_emmeans_draws() %>%
-  mean_qi(.width = 0.95)
+  mean_hdi(.width = 0.95)
+
+detr.m.2 %>%
+  ref_grid() %>% 
+  add_grouping("soil",
+               "treatment",
+               factor(c("0", "0", "1", "2"),
+                      levels = c("1", "0", "2"))) %>%
+  emmeans(~ soil) %>%
+  contrast(method = "pairwise") %>%
+  gather_emmeans_draws() %>%
+  mean_hdi(.width = c(.9,.95))
